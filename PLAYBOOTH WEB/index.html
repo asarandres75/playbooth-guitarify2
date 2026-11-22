@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlayBooth · Guitarify</title>
+  <meta name="theme-color" content="#0d0c0b">
+  <link rel="icon" href="assets/pua.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/tema.css">
+  <link rel="stylesheet" href="assets/cabina.css">
+</head>
+<body>
+  <!-- Íconos reutilizables -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-pua" viewBox="0 0 100 100">
+      <path d="M50 97 C33 84 7 60 7 30 C7 14 27 5 50 5 C73 5 93 14 93 30 C93 60 67 84 50 97 Z" fill="#c8102e" stroke="#d4a52a" stroke-width="5"/>
+      <path d="M57 17 L35 55 L48 55 L42 85 L66 43 L53 43 L60 17 Z" fill="#f7ede0"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-repetir" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-camara" viewBox="0 0 24 24"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12.5" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-bajar" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <div class="app" data-estado="inicio">
+    <!-- Barra lateral: la "playlist" de la sesión -->
+    <aside class="lateral">
+      <div class="marca">
+        <svg class="marca-pua"><use href="#i-pua"/></svg>
+        <div>
+          <div class="marca-nombre titulo-anton">PlayBooth</div>
+          <div class="marca-sub">by Guitarify</div>
+        </div>
+      </div>
+
+      <section class="lista">
+        <div class="lista-cabecera">
+          <span>Tu sesión</span>
+          <span class="lista-cuenta" id="cuenta">0 / 3</span>
+        </div>
+        <ol class="pistas" id="pistas">
+          <!-- se llena desde cabina.js -->
+        </ol>
+      </section>
+
+      <div class="consejo">
+        <strong>Tip</strong>
+        Miren a la cámara, no a la pantalla. Pueden repetir cada foto las veces que quieran.
+      </div>
+
+      <div class="teclas">
+        <span><kbd>Espacio</kbd> tomar / usar</span>
+        <span><kbd>R</kbd> repetir</span>
+      </div>
+    </aside>
+
+    <!-- Escenario principal -->
+    <main class="principal">
+      <div class="cabecera-degradado"></div>
+
+      <!-- Cámara / revisión -->
+      <div class="escenario" id="escenario">
+        <div class="marco-foto" id="marco">
+          <video id="video" autoplay playsinline muted></video>
+          <canvas id="revision" class="revision"></canvas>
+          <div class="etiqueta-foto" id="etiqueta">Foto 1 de 3</div>
+          <div class="cuenta-atras" id="cuentaAtras"></div>
+          <div class="destello" id="destello"></div>
+
+          <!-- Pantalla de inicio sobre la cámara -->
+          <div class="portada" id="portada">
+            <div class="portada-tipo">Photobooth · Feria de Proyectos Personales</div>
+            <h1 class="portada-titulo titulo-anton">PlayBooth</h1>
+            <p class="portada-texto">Tres fotos. Una tira de Guitarify. Un QR para llevártela.</p>
+            <button class="pildora pildora-roja grande" id="btnEmpezar">Empezar</button>
+          </div>
+
+          <!-- Error de cámara -->
+          <div class="aviso-camara" id="avisoCamara" hidden>
+            <svg class="icono-grande"><use href="#i-camara"/></svg>
+            <h2>No se pudo abrir la cámara</h2>
+            <p id="avisoCamaraTexto">Revisa que el navegador tenga permiso para usar la cámara.</p>
+            <button class="pildora pildora-roja" id="btnReintentarCamara">Reintentar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultado: tira + QR -->
+      <div class="resultado" id="resultado" hidden>
+        <div class="resultado-tira">
+          <img id="imgTira" alt="Tu tira PlayBooth">
+        </div>
+        <div class="resultado-qr">
+          <div class="resultado-tipo">Tu tira está lista</div>
+          <h2 class="resultado-titulo titulo-anton">Escanea y llévatela</h2>
+          <div class="qr-caja" id="qrCaja">
+            <div class="cargando" id="qrCargando"><span></span><span></span><span></span></div>
+          </div>
+          <p class="resultado-estado" id="estadoSubida">Subiendo tu tira…</p>
+          <p class="resultado-ayuda">Abre la cámara de tu celular, apunta al código y podrás descargar la tira, las fotos sueltas o mandarlas por WhatsApp.</p>
+          <div class="resultado-botones">
+            <button class="pildora pildora-borde" id="btnReintentarSubida" hidden>
+              <svg class="icono"><use href="#i-repetir"/></svg> Reintentar subida
+            </button>
+            <a class="pildora pildora-oscura" id="btnDescargarAqui" download="tira-playbooth.jpg">
+              <svg class="icono"><use href="#i-bajar"/></svg> Descargar aquí
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Barra inferior tipo reproductor -->
+    <footer class="reproductor">
+      <div class="rep-izq">
+        <div class="rep-mini" id="repMini"><svg><use href="#i-pua"/></svg></div>
+        <div>
+          <div class="rep-titulo" id="repTitulo">Listos para empezar</div>
+          <div class="rep-sub">PlayBooth · Guitarify</div>
+        </div>
+      </div>
+
+      <div class="rep-centro">
+        <div class="rep-controles">
+          <button class="control-sec" id="btnRepetir" title="Repetir (R)">
+            <svg class="icono"><use href="#i-repetir"/></svg><span>Repetir</span>
+          </button>
+          <button class="disparador" id="btnDisparar" title="Tomar foto (Espacio)">
+            <svg><use href="#i-camara"/></svg>
+          </button>
+          <button class="control-sec control-usar" id="btnUsar" title="Usar esta (Espacio)">
+            <svg class="icono"><use href="#i-check"/></svg><span>Usar esta</span>
+          </button>
+        </div>
+        <div class="progreso" id="progreso">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="rep-der">
+        <button class="pildora pildora-roja" id="btnNueva" hidden>Nueva sesión</button>
+        <span class="rep-reinicio" id="repReinicio"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/qrcode.js"></script>
+  <script src="assets/tira.js"></script>
+  <script src="assets/cabina.js"></script>
+</body>
+</html>

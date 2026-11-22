@@ -1,0 +1,16 @@
+{
+  "name": "playbooth-guitarify",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Photobooth del PlayBooth de Guitarify: 3 fotos, tira con QR y página para descargar y compartir.",
+  "scripts": {
+    "local": "node servidor-local.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.9.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

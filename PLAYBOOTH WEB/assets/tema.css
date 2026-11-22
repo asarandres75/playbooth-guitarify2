@@ -1,0 +1,63 @@
+/* PlayBooth · Guitarify — tema compartido (cabina + página de descarga) */
+@font-face { font-family: "Montserrat"; src: url("fonts/montserrat.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Montserrat"; src: url("fonts/montserrat-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Anton"; src: url("fonts/anton.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+
+:root {
+  --fondo: #0d0c0b;
+  --panel: #171513;
+  --panel-2: #211e1b;
+  --panel-3: #2c2824;
+  --linea: rgba(212, 165, 42, 0.28);
+  --texto: #f5efe4;
+  --texto-2: #b3aa9e;
+  --texto-3: #7d756b;
+  --rojo: #d4142e;
+  --rojo-hover: #ee2240;
+  --rojo-oscuro: #6b0d18;
+  --oro: #d4a52a;
+  --oro-claro: #ecc85a;
+  --radio: 10px;
+  --sombra: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: "Montserrat", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+
+.titulo-anton {
+  font-family: "Anton", "Montserrat", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--oro);
+  text-shadow: 2px 2px 0 var(--rojo-oscuro);
+}
+
+/* Botones tipo píldora (guiño a Spotify) */
+.pildora {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  padding: 14px 30px; font-weight: 800; font-size: 15px; letter-spacing: 0.06em;
+  text-transform: uppercase; text-decoration: none;
+  transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+}
+.pildora:hover { transform: scale(1.04); }
+.pildora:active { transform: scale(0.98); }
+.pildora:focus-visible { outline: 3px solid var(--oro-claro); outline-offset: 3px; }
+.pildora-roja { background: var(--rojo); color: #fff; box-shadow: 0 6px 18px rgba(212, 20, 46, 0.35); }
+.pildora-roja:hover { background: var(--rojo-hover); }
+.pildora-borde { background: transparent; color: var(--texto); box-shadow: inset 0 0 0 1.5px rgba(245, 239, 228, 0.45); }
+.pildora-borde:hover { box-shadow: inset 0 0 0 1.5px var(--texto); }
+.pildora-oscura { background: var(--panel-3); color: var(--texto); }
+.pildora-oscura:hover { background: #38332e; }
+.pildora[disabled] { opacity: .45; pointer-events: none; }
+
+.icono { width: 20px; height: 20px; flex: none; }
